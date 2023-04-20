@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mkdir /etc/ssl/selfsigned
+sudo mkdir /etc/ssl/selfsigned
 cd /etc/ssl/selfsigned
 
 public_ip=$(curl -s ifconfig.me)
