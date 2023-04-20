@@ -19,3 +19,6 @@ sudo openssl x509 -req -days 365 -in server.csr \
 
 sudo openssl x509 -req -days 365 -in client.csr \
 -CA ca.crt -CAkey ca.key -set_serial 02 -out client.crt
+
+sudo chmod 777 client.key
+sudo chmod 777 client.crt
