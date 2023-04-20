@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+    db:
+        image: postgres
+        restart: always
+        volumes:
+            - ./postgres-data:/var/lib/postgresql/data
+        env_file:
+            - ./database.env
+        ports:
+            - "5432:5432"
+        container_name: postgres_database
+  
+    pgadmin:
+        image: dpage/pgadmin4
+        env_file:
+            - ./pgadmin.env
+        ports:
+            - "80"
+        depends_on:
+            - db
+        container_name: pgadmin4
+  
+    app:
+        build:
+            context: app
+        ports:
+            - "5000"
+        depends_on:
+            db:
+                condition: service_started
+        container_name: flask_app
+
+    nginx:
+        image: nginx:latest
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf:ro
+            - /etc/ssl/selfsigned:/etc/ssl/selfsigned
+        depends_on:
+            - app
+        ports:
+            - "80:80"
+            - "443:443"
+        container_name: nginx
