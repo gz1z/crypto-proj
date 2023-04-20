@@ -1,3 +1,7 @@
+#!/bin/bash
+
+cd ~
+
 # Run vscode code server
 nohup code-server --port 9000 --auth none &
 
