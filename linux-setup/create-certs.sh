@@ -1,9 +1,10 @@
 #!/bin/bash
 
+mkdir /etc/ssl/selfsigned
 cd /etc/ssl/selfsigned
+
 public_ip=$(curl -s ifconfig.me)
 
-echo $public_ip
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 -keyout ca.key -out ca.crt -subj "/C=MX/O=DreamTeam/CN=$public_ip"
 
