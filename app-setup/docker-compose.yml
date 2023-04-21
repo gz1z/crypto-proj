@@ -11,7 +11,7 @@ services:
         ports:
             - "5432:5432"
         container_name: postgres_database
-  
+
     pgadmin:
         image: dpage/pgadmin4
         env_file:
@@ -21,7 +21,7 @@ services:
         depends_on:
             - db
         container_name: pgadmin4
-  
+
     app:
         build:
             context: app
@@ -30,7 +30,6 @@ services:
         depends_on:
             db:
                 condition: service_started
-        container_name: flask_app
 
     nginx:
         image: nginx:latest
