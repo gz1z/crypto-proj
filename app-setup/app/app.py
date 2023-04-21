@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from datetime import datetime
@@ -24,6 +24,14 @@ class SensorData(db.Model):
     data_value = db.Column(db.Float, nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'timestamp': self.timestamp,
+            'sensor_type': self.sensor_type,
+            'data_value': self.data_value
+        }
+
     def __repr__(self):
         return f"<SensorData(sensor_type='{self.sensor_type}', data_value='{self.data_value}', timestamp='{self.timestamp}')>"
 
@@ -32,9 +40,19 @@ if not engine.dialect.has_table(engine, SensorData.__tablename__):
     db.create_all()
 
 
-@app.route('/app', methods=['GET'])
+@app.route('/', methods=['GET'])
 def index():
     return "Hey there! \n"
+
+
+@app.route('/api/sensor-data', methods=['GET'])
+def get_sensor_data():
+    # Query all sensor data from database
+    sensor_data = SensorData.query.all()
+
+    # Serialize sensor data as JSON and return response
+    sensor_data_json = [data.to_dict() for data in sensor_data]
+    return jsonify(sensor_data_json)
 
 # Define the endpoint for receiving data and inserting it to the database
 @app.route('/api/sensor-data', methods=['POST'])
@@ -49,11 +67,10 @@ def add_sensor_data():
     db.session.add(sensor_data)
     db.session.commit()
 
-    # Return a response indicating success
     return {'message': 'Data successfully added to database.'}, 201
 
 # Define an endpoint for generating fake sensor data
-@app.route('/api/fake-sensor-data', methods=['POST'])
+@app.route('/fake-sensor-data', methods=['POST'])
 def generate_fake_sensor_data():
     # Parse the data from the request
     data = request.json
@@ -70,6 +87,4 @@ def generate_fake_sensor_data():
         fake_data.append(sensor_data)
 
     db.session.commit()
-
-    # Return a response with the generated fake data
     return {'message': 'Fake data successfully added to database.'}, 201
