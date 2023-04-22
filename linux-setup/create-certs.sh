@@ -18,7 +18,7 @@ sudo openssl req -nodes -newkey rsa:2048 \
 sudo openssl x509 -req -in server.csr \
 -CA ca.crt -CAkey ca.key -set_serial 01 -out server.crt
 
-sudo openssl x509 -req5 -in client.csr \
+sudo openssl x509 -req -in client.csr \
 -CA ca.crt -CAkey ca.key -set_serial 02 -out client.crt
 
 sudo chmod 777 client.key
