@@ -5,7 +5,7 @@ cd /etc/ssl/selfsigned
 
 sudo rm index.txt
 sudo touch index.txt
-sudo echo 01 > serial
+echo 01 | sudo tee -a serial
 
 sudo rm -r keys
 sudo rm -r certs
