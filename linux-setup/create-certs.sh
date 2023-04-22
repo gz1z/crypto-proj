@@ -3,8 +3,9 @@
 sudo mkdir -p /etc/ssl/selfsigned
 cd /etc/ssl/selfsigned
 
-touch index.txt
-echo 01 > serial
+sudo rm index.txt
+sudo touch index.txt
+sudo echo 01 > serial
 
 sudo rm -r keys
 sudo rm -r certs
