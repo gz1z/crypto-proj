@@ -1,5 +1,6 @@
 #!/bin/bash
 
+sudo rm -r /etc/ssl/selfsigned
 sudo mkdir /etc/ssl/selfsigned
 cd /etc/ssl/selfsigned
 
